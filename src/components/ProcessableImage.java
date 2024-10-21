@@ -2,10 +2,7 @@ package components;
 
 import java.awt.image.BufferedImage;
 
-import dip.MirrorHorizontally;
-import dip.MirrorVertically;
-import dip.Scale;
-import dip.Translate;
+import dip.*;
 
 public class ProcessableImage {
   private BufferedImage image = null;
@@ -43,6 +40,24 @@ public class ProcessableImage {
   public ProcessableImage scale(double factorX, double factorY) {
     image = new Scale(image, factorX, factorY).getOutput();
 
+    return this;
+  }
+  
+  public ProcessableImage rotate(double angle) {
+    image = new Rotate(image, angle).getOutput();
+
+    return this;
+  }
+
+  public ProcessableImage grayscale() {
+    image = new Grayscale(image).getOutput();
+
+    return this;
+  }
+  
+  public ProcessableImage brightness() {
+    image = new Brightness(image).getOutput();
+    
     return this;
   }
 }

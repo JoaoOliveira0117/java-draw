@@ -27,7 +27,18 @@ public class ImageContextMenu {
       })
       .addItem("Translate", e -> 
         showTranslationModal(image)
-      );
+      )
+      .addItem("Rotate", e -> {
+        String angle = JOptionPane.showInputDialog("Enter the angle to rotate the image");
+        image.rotate(Double.parseDouble(angle));
+        component.repaint();
+      })
+      .addItem("Grayscale", e -> {
+        image.grayscale();
+        component.repaint();
+      })
+      .addItem("Brightness", e -> {
+      });
 
     return context;
   }
