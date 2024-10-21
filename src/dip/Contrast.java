@@ -2,10 +2,10 @@ package dip;
 
 import java.awt.image.BufferedImage;
 
-public class Brightness extends TransformPixel {
-  private static int value = 50;
+public class Contrast extends TransformPixel {
+  private static int value = 2;
 
-  public Brightness(BufferedImage image) {
+  public Contrast(BufferedImage image) {
     super(image);
   }
 
@@ -16,9 +16,9 @@ public class Brightness extends TransformPixel {
     int g = (rgb >> 8) & 0xFF;
     int b = rgb & 0xFF;
 
-    int newR = r + value;
-    int newG = g + value;
-    int newB = b + value;
+    int newR = Math.max(value * r, 0);
+    int newG = Math.max(value * g, 0);
+    int newB = Math.max(value * b, 0);
 
     if (newR > 255) {
       newR = 255;

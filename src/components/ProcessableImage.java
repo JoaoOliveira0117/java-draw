@@ -60,4 +60,10 @@ public class ProcessableImage {
     
     return this;
   }
+
+  public ProcessableImage contrast() {
+    image = new Contrast(image).getOutput();
+    
+    return this;
+  }
 }

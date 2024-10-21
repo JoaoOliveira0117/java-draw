@@ -38,6 +38,12 @@ public class ImageContextMenu {
         component.repaint();
       })
       .addItem("Brightness", e -> {
+        image.brightness();
+        component.repaint();
+      })
+      .addItem("Contrast", e -> {
+        image.contrast();
+        component.repaint();
       });
 
     return context;
