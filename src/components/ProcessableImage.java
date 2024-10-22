@@ -66,4 +66,34 @@ public class ProcessableImage {
     
     return this;
   }
+
+  public ProcessableImage medianFilter() {
+    image = new MedianFilter(image).getOutput();
+
+    return this;
+  }
+
+  public ProcessableImage gaussianFilter() {
+    image = new GaussianFilter(image).getOutput();
+
+    return this;
+  }
+
+  public ProcessableImage thresholdFilter() {
+    image = new ThresholdFilter(image).getOutput();
+
+    return this;
+  }
+
+  public ProcessableImage EdgeDetectionRoberts() {
+    image = new EdgeDetectionRoberts(image).getOutput();
+
+    return this;
+  }
+
+  public ProcessableImage EdgeDetectionSobel() {
+    image = new EdgeDetectionSobel(image).getOutput();
+
+    return this;
+  }
 }

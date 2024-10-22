@@ -44,6 +44,31 @@ public class ImageContextMenu {
       .addItem("Contrast", e -> {
         image.contrast();
         component.repaint();
+      })
+      .addItem("Median Filter", e -> {
+        image.grayscale();
+        image.medianFilter();
+        component.repaint();
+      })
+      .addItem("Gaussian Filter", e -> {
+        image.grayscale();
+        image.gaussianFilter();
+        component.repaint();
+      })
+      .addItem("Threshold Filter", e -> {
+        image.grayscale();
+        image.thresholdFilter();
+        component.repaint();
+      })
+      .addItem("Roberts Edge Detection", e -> {
+        image.grayscale();
+        image.EdgeDetectionRoberts();
+        component.repaint();
+      })
+      .addItem("Sobel Edge Detection", e -> {
+        image.grayscale();
+        image.EdgeDetectionSobel();
+        component.repaint();
       });
 
     return context;
