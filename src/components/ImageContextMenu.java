@@ -4,7 +4,12 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import builders.ContextMenuBuilder;
-import interfaces.TranslationModalListener;
+import components.modals.BrightnessFilterModal;
+import components.modals.ContrastFilterModal;
+import components.modals.EdgeDetectionFilterModal;
+import components.modals.MedianFilterModal;
+import components.modals.ThresholdFilterModal;
+import interfaces.ITranslationModalListener;
 
 public class ImageContextMenu {
   private JComponent component;
@@ -25,66 +30,48 @@ public class ImageContextMenu {
         image.mirrorVertically();
         component.repaint();
       })
-      .addItem("Translate", e -> 
-        showTranslationModal(image)
-      )
+      .addItem("Translate", e -> {
+        new TranslationModal(new ITranslationModalListener() {
+          @Override
+          public void onConfirm(int x, int y) {
+            image.translate(x, y);
+            component.repaint();
+          };
+
+          @Override
+          public void onCancel() {
+          }
+        });
+      })
       .addItem("Rotate", e -> {
         String angle = JOptionPane.showInputDialog("Enter the angle to rotate the image");
         image.rotate(Double.parseDouble(angle));
         component.repaint();
       })
       .addItem("Grayscale", e -> {
-        image.grayscale();
-        component.repaint();
+        int choice = JOptionPane.showConfirmDialog(component, "This action is irreversible. Do you want to procceed?");
+
+        if (choice == JOptionPane.YES_OPTION) {
+          image.grayscale();
+          component.repaint();
+        }
       })
-      .addItem("Brightness", e -> {
-        image.brightness();
-        component.repaint();
-      })
-      .addItem("Contrast", e -> {
-        image.contrast();
-        component.repaint();
-      })
-      .addItem("Median Filter", e -> {
-        image.grayscale();
-        image.medianFilter();
-        component.repaint();
-      })
+      .addItem("Brightness", e -> new BrightnessFilterModal(image))
+      .addItem("Contrast", e -> new ContrastFilterModal(image))
+      .addItem("Median Filter", e -> new MedianFilterModal(image))
       .addItem("Gaussian Filter", e -> {
         image.grayscale();
         image.gaussianFilter();
         component.repaint();
       })
-      .addItem("Threshold Filter", e -> {
-        image.grayscale();
-        image.thresholdFilter();
-        component.repaint();
-      })
-      .addItem("Roberts Edge Detection", e -> {
-        image.grayscale();
-        image.EdgeDetectionRoberts();
-        component.repaint();
-      })
-      .addItem("Sobel Edge Detection", e -> {
-        image.grayscale();
-        image.EdgeDetectionSobel();
-        component.repaint();
-      });
+      .addItem("Threshold Filter", e -> new ThresholdFilterModal(image))
+      .addItem("Roberts Edge Detection", e -> new EdgeDetectionFilterModal(image, true))
+      .addItem("Sobel Edge Detection", e -> new EdgeDetectionFilterModal(image, false));
 
     return context;
   }
 
   public void show(int x, int y) {
     context.show(component, x, y);
-  }
-
-  private void showTranslationModal(ProcessableImage image) {
-    new TranslationModal().addListener(new TranslationModalListener() {
-      @Override
-      public void onConfirm(int x, int y) {
-        image.translate(x, y);
-        component.repaint();
-      }
-    });
   }
 }

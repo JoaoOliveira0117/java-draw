@@ -1,118 +1,88 @@
 package components;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.FlowLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
 
 import formatters.NumberFormatter;
+import interfaces.ITranslationModalListener;
 
-import interfaces.TranslationModalListener;
+public class TranslationModal extends Modal {
+    private int xValue = 0;
+    private int yValue = 0;
 
-public class TranslationModal extends JDialog {
-  private static final int WIDTH = 300;
-  private static final int HEIGHT = 180;
+    public TranslationModal(ITranslationModalListener listener) {
+        super("Translate Image", "Enter the X and Y distance");
 
-  private int xValue;
-  private int yValue;
-  
-  private JFormattedTextField xInput;
-  private JFormattedTextField yInput;
-  private TranslationModalListener listener;
+        this.confirmButton.addActionListener(e -> {
+            listener.onConfirm(xValue, yValue);
+        });
 
-  public TranslationModal() {
-    setModal(true);
-    setTitle("Translate");
-    setSize(WIDTH, HEIGHT);
-    setLocationRelativeTo(null);
-    setLayout(new BorderLayout(10, 10));
-
-    add(createHintText(), BorderLayout.NORTH);
-    add(createInputsForm(), BorderLayout.CENTER);
-    add(createButtons(), BorderLayout.SOUTH);
-
-  }
-
-  private JComponent createHintText() {
-    JLabel hintText = new JLabel("Insira os valores de translação", JLabel.CENTER);
-    hintText.setBorder(new EmptyBorder(5, 10, 5, 10));
-    return hintText;
-  }
-
-  private JComponent createInputsForm() {
-    JPanel container = new JPanel(new GridBagLayout());
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(5, 10, 5, 10);
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    container.add(createNumberInput("X"), gbc);
-
-    gbc.gridx = 1;
-    container.add(createNumberInput("Y"), gbc);
-
-    return container;
-  }
-
-  private JComponent createNumberInput(String label) {
-    JPanel container = new JPanel(new BorderLayout(5, 5));
-    JLabel labelComponent = new JLabel(label);
-
-    NumberFormatter format = new NumberFormatter();
-
-    JFormattedTextField input = new JFormattedTextField();
-    ((AbstractDocument) input.getDocument()).setDocumentFilter(format);
-
-    input.setPreferredSize(new Dimension(80, 30));
-
-    if (label.equals("X")) {
-      xInput = input;
-    } else {
-      yInput = input;
+        display();
     }
 
-    container.add(labelComponent, BorderLayout.WEST);
-    container.add(input, BorderLayout.CENTER);
+    private JTextField numberField() {
+        JTextField textField = new JTextField(10);
+        ((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumberFormatter());
+        return textField;
+    }
 
-    return container;
-  }
+    @Override
+    protected JComponent form() {
+        JPanel container = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-  private JComponent createButtons() {
-    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextField xField = numberField();
+        JTextField yField = numberField();
 
-    JButton okButton = new JButton("OK");
-    JButton cancelButton = new JButton("CANCELAR");
+        addDocumentListener(xField, true); 
+        addDocumentListener(yField, false);
 
-    okButton.addActionListener(e -> {
-      xValue = Integer.valueOf(xInput.getText());
-      yValue = Integer.valueOf(yInput.getText());
+        container.add(new JLabel("X:"));
+        container.add(xField);
+        container.add(new JLabel("Y:"));
+        container.add(yField);
 
-      if (listener != null) {
-        listener.onConfirm(xValue, yValue);
-      }
-      
-      dispose();
-    });
+        return container;
+    }
 
-    cancelButton.addActionListener(e -> dispose());
+    private void addDocumentListener(JTextField textField, boolean isXValue) {
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateValue(textField, isXValue);
+            }
 
-    buttonPanel.add(okButton);
-    buttonPanel.add(cancelButton);
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateValue(textField, isXValue);
+            }
 
-    return buttonPanel;
-  }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateValue(textField, isXValue);
+            }
+        });
+    }
 
-  public void addListener(TranslationModalListener listener) {
-    this.listener = listener;
-    setVisible(true);
-  }
-
-  public int getXValue() {
-    return xValue;
-  }
-
-  public int getYValue() {
-    return yValue;
-  }
+    private void updateValue(JTextField textField, boolean isXValue) {
+        try {
+            int value = Integer.parseInt(textField.getText());
+            if (isXValue) {
+                xValue = value;
+            } else {
+                yValue = value;
+            }
+        } catch (NumberFormatException e) {
+            if (isXValue) {
+                xValue = 0;
+            } else {
+                yValue = 0;
+            }
+        }
+    }
 }

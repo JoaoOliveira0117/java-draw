@@ -3,12 +3,26 @@ package components;
 import java.awt.image.BufferedImage;
 
 import dip.*;
+import interfaces.ProcessableImageListener;
 
 public class ProcessableImage {
   private BufferedImage image = null;
+  private ProcessableImageListener listener;
 
   public ProcessableImage(BufferedImage image) {
     this.image = image;
+  }
+  
+  public ProcessableImage(BufferedImage image, ProcessableImageListener listener) {
+    this.image = image;
+
+    this.listener = listener;
+  }
+
+  public void triggerRerender() {
+    if (listener!= null) {
+      listener.triggerRerender();
+    }
   }
 
   public BufferedImage getImage() {
@@ -55,20 +69,20 @@ public class ProcessableImage {
     return this;
   }
   
-  public ProcessableImage brightness() {
-    image = new Brightness(image, 50).getOutput();
+  public ProcessableImage brightness(int strength) {
+    image = new Brightness(image, strength).getOutput();
     
     return this;
   }
 
-  public ProcessableImage contrast() {
-    image = new Contrast(image, 50).getOutput();
+  public ProcessableImage contrast(double strength) {
+    image = new Contrast(image, strength).getOutput();
     
     return this;
   }
 
-  public ProcessableImage medianFilter() {
-    image = new MedianFilter(image, 3).getOutput();
+  public ProcessableImage medianFilter(int windowSize) {
+    image = new MedianFilter(image, windowSize).getOutput();
 
     return this;
   }
@@ -79,20 +93,20 @@ public class ProcessableImage {
     return this;
   }
 
-  public ProcessableImage thresholdFilter() {
-    image = new ThresholdFilter(image, 128).getOutput();
+  public ProcessableImage thresholdFilter(int threshold) {
+    image = new ThresholdFilter(image, threshold).getOutput();
 
     return this;
   }
 
-  public ProcessableImage EdgeDetectionRoberts() {
-    image = new Roberts(image, 128).getOutput();
+  public ProcessableImage EdgeDetectionRoberts(int threshold) {
+    image = new Roberts(image, threshold).getOutput();
 
     return this;
   }
 
-  public ProcessableImage EdgeDetectionSobel() {
-    image = new Sobel(image, 128).getOutput();
+  public ProcessableImage EdgeDetectionSobel(int threshold) {
+    image = new Sobel(image, threshold).getOutput();
 
     return this;
   }

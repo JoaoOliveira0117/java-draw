@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import interfaces.ProcessableImageListener;
+
 public class InteractableImage extends InteractableComponent {
     private ProcessableImage image;
     private ImageContextMenu context;
@@ -14,7 +16,12 @@ public class InteractableImage extends InteractableComponent {
 
 
     public InteractableImage(BufferedImage image) {
-      this.image = new ProcessableImage(image);
+      this.image = new ProcessableImage(image, new ProcessableImageListener() {
+        @Override
+        public void triggerRerender() {
+          repaint();
+        }
+      });
 
       context = new ImageContextMenu(this.image, this);
 

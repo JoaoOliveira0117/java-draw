@@ -3,10 +3,11 @@ package dip;
 import java.awt.image.BufferedImage;
 
 public class Contrast extends TransformPixel {
-  private int strength = 0;
+  private double strength = 0;
 
-  public Contrast(BufferedImage image, int strength) {
+  public Contrast(BufferedImage image, double strength) {
     super(image);
+    this.strength = strength;
     this.processPixels();
   }
 
@@ -17,9 +18,9 @@ public class Contrast extends TransformPixel {
     int g = (rgb >> 8) & 0xFF;
     int b = rgb & 0xFF;
 
-    int newR = Math.min(r * strength, 255);
-    int newG = Math.min(g * strength, 255);
-    int newB = Math.min(b * strength, 255);
+    int newR = (int) Math.min(r * strength, 255);
+    int newG = (int) Math.min(g * strength, 255);
+    int newB = (int) Math.min(b * strength, 255);
 
     return (alpha << 24) | (newR << 16) | (newG << 8) | newB;
   }
