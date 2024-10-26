@@ -17,15 +17,28 @@ public class MedianFilter extends TransformFilter {
       return image.getRGB(x, y);
     }
 
-    int[] rgbValues = new int[9];
+    int[] redValues = new int[9];
     int count = 0;
     for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        rgbValues[count++] = image.getRGB(x + i, y + j);
+        int rgb = image.getRGB(x + i, y + j);
+        int r = (rgb >> 16) & 0xFF;
+        redValues[count++] = r;
       }
     }
 
-    java.util.Arrays.sort(rgbValues);
-    return rgbValues[rgbValues.length / 2];
+    java.util.Arrays.sort(redValues);
+    for(int a: redValues) {
+      System.out.println(a);
+    }
+
+    int newR = redValues[redValues.length / 2];
+    // Convert red to rgba
+    int alpha = (image.getRGB(x, y) >> 24) & 0xFF;
+    int gray = newR;
+    int newRgb = (alpha << 24) | (gray << 16) | (gray << 8) | gray;
+
+    System.out.println((newRgb >> 16 ) & 0xFF);
+    return newRgb;
   }
 }
