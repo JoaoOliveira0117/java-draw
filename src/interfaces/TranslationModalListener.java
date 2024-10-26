@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface ITranslationModalListener {
+public interface TranslationModalListener {
   public void onConfirm(int x, int y);
   public void onCancel();
 }

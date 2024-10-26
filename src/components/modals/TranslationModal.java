@@ -1,4 +1,4 @@
-package components;
+package components.modals;
 
 import java.awt.FlowLayout;
 import javax.swing.JComponent;
@@ -9,19 +9,26 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
 
+import components.Modal;
+import components.ProcessableImage;
 import formatters.NumberFormatter;
-import interfaces.ITranslationModalListener;
+import interfaces.TranslationModalListener;
 
 public class TranslationModal extends Modal {
     private int xValue = 0;
     private int yValue = 0;
 
-    public TranslationModal(ITranslationModalListener listener) {
+    public TranslationModal(ProcessableImage image) {
         super("Translate Image", "Enter the X and Y distance");
+
+        TranslationModalListener listener = createListener(image);
 
         this.confirmButton.addActionListener(e -> {
             listener.onConfirm(xValue, yValue);
+            dispose();
         });
+
+        add(form());
 
         display();
     }
@@ -85,4 +92,24 @@ public class TranslationModal extends Modal {
             }
         }
     }
+    
+  private static TranslationModalListener createListener(ProcessableImage image) {
+    ProcessableImage originalImage = new ProcessableImage(image.getImage());
+    ProcessableImage commitableImage = new ProcessableImage(image.getImage());
+
+    return new TranslationModalListener() {
+      @Override
+      public void onConfirm(int x, int y) {
+        image.setImage(commitableImage.translate(x, y).getImage());
+        image.triggerRerender();
+      }
+
+      @Override
+      public void onCancel() {
+        image.setImage(originalImage.getImage());
+        image.triggerRerender();
+      }
+      
+    };
+  }
 }

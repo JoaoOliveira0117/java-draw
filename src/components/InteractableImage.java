@@ -10,7 +10,6 @@ import interfaces.ProcessableImageListener;
 
 public class InteractableImage extends InteractableComponent {
     private ProcessableImage image;
-    private ImageContextMenu context;
 
     private Point prevPoint;
 
@@ -22,8 +21,6 @@ public class InteractableImage extends InteractableComponent {
           repaint();
         }
       });
-
-      context = new ImageContextMenu(this.image, this);
 
       setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
     }
@@ -49,6 +46,6 @@ public class InteractableImage extends InteractableComponent {
 
 		@Override
 		public void onMouseRightClick(MouseEvent e) {
-			context.show(e.getX(), e.getY());
+			ImageContextMenu.show(image, this, e.getX(), e.getY());
 		}
 }
