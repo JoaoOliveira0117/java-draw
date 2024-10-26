@@ -6,7 +6,9 @@ import interfaces.SliderModalListener;
 
 public class BrightnessFilterModal extends SliderModal {
   public BrightnessFilterModal(ProcessableImage image) {
-    super("Brightness Filter", createListener(image), 0, 100, 10);
+    super("Brightness Filter", createListener(image), -255, 255, 32);
+    
+    display();
   }
 
   private static SliderModalListener createListener(ProcessableImage image) {
@@ -21,10 +23,8 @@ public class BrightnessFilterModal extends SliderModal {
 
       @Override
       public void onChange(Object value) {
-        double newValue = Math.min(255, Math.max(0, (int) value)) * 2.55;
-
         commitableImage.setImage(originalImage.getImage());
-        commitableImage.brightness((int) newValue);
+        commitableImage.brightness((int) value);
         image.setImage(commitableImage.getImage());
         image.triggerRerender();
       }

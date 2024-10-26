@@ -19,10 +19,9 @@ public class SliderModal extends Modal {
     public SliderModal(String effectName, SliderModalListener listener) {
         super(effectName, "Enter the strength of the " + effectName + " effect");
 
-        add(form());
-
         this.confirmButton.addActionListener(e -> {
             listener.onConfirm();
+            dispose();
         });
 
         this.slider.addChangeListener(e -> {
@@ -32,8 +31,10 @@ public class SliderModal extends Modal {
 
         this.cancelButton.addActionListener(e -> {
             listener.onCancel();
+            dispose();
         });
-        display();
+
+        add(form());
     }
 
     public SliderModal(String effectName, SliderModalListener listener, int minValue, int maxValue, int step) {
@@ -65,7 +66,7 @@ public class SliderModal extends Modal {
     protected JComponent form() {
         JPanel container = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         
-        JSlider slider = new JSlider(minValue, maxValue, maxValue / 2);
+        JSlider slider = new JSlider(minValue, maxValue, (minValue + maxValue) / 2);
 
         if(step != 0) {
             slider.setMajorTickSpacing(step);

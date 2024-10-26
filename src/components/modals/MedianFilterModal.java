@@ -7,6 +7,8 @@ import interfaces.SliderModalListener;
 public class MedianFilterModal extends SliderModal {
   public MedianFilterModal(ProcessableImage image) {
     super("Median Filter", createListener(image), 3, 7, 2);
+    
+    display();
   }
 
   private static SliderModalListener createListener(ProcessableImage image) {

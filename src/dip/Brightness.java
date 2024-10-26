@@ -18,9 +18,9 @@ public class Brightness extends TransformPixel {
     int g = (rgb >> 8) & 0xFF;
     int b = rgb & 0xFF;
 
-    int newR = Math.min(r + strength, 255);
-    int newG = Math.min(g + strength, 255);
-    int newB = Math.min(b + strength, 255);
+    int newR = Math.max(Math.min(r + strength, 255), 0);
+    int newG = Math.max(Math.min(g + strength, 255), 0);
+    int newB = Math.max(Math.min(b + strength, 255), 0);
 
     return (alpha << 24) | (newR << 16) | (newG << 8) | newB;
   }

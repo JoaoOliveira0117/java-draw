@@ -1,24 +1,12 @@
 package components.modals;
 
-import components.Modal;
+import components.ConfirmationModal;
 import components.ProcessableImage;
 import interfaces.ConfirmationModalListener;
 
-public class ConfirmationModal extends Modal {
-  public ConfirmationModal(ProcessableImage image) {
-    super("Confirm?", "This action is irreversible. Do you want to procceed?");
-
-    ConfirmationModalListener listener = createListener(image);
-    
-    add(form());
-
-    this.confirmButton.addActionListener(e -> {
-      listener.onConfirm();
-    });
-
-    this.cancelButton.addActionListener(e -> {
-      listener.onCancel();
-    });
+public class GrayscaleModal extends ConfirmationModal {
+  public GrayscaleModal(ProcessableImage image) {
+    super(image, createListener(image));
     
     display();
   }
@@ -30,7 +18,7 @@ public class ConfirmationModal extends Modal {
     return new ConfirmationModalListener() {
       @Override
       public void onConfirm() {
-        image.setImage(commitableImage.getImage());
+        image.setImage(commitableImage.grayscale().getImage());
         image.triggerRerender();
       }
 

@@ -7,6 +7,8 @@ import interfaces.SliderModalListener;
 public class ThresholdFilterModal extends SliderModal {
   public ThresholdFilterModal(ProcessableImage image) {
     super("Threshold Filter", createListener(image), 0, 100, 10);
+    
+    display();
   }
 
   private static SliderModalListener createListener(ProcessableImage image) {

@@ -6,7 +6,9 @@ import interfaces.SliderModalListener;
 
 public class ContrastFilterModal extends SliderModal {
   public ContrastFilterModal(ProcessableImage image) {
-    super("Contrast Filter", createListener(image), 0, 200, 20);
+    super("Contrast Filter", createListener(image), 0, 255, 32);
+    
+    display();
   }
 
   private static SliderModalListener createListener(ProcessableImage image) {
