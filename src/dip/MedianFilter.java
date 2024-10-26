@@ -3,42 +3,38 @@ package dip;
 import java.awt.image.BufferedImage;
 
 public class MedianFilter extends TransformFilter {
-  public MedianFilter(BufferedImage image) {
+  private int windowSize = 3;
+
+  public MedianFilter(BufferedImage image, int windowSize) {
     super(image);
+    this.windowSize = windowSize;
+    this.processPixels();
   }
 
   @Override
   protected int filterProcess(BufferedImage image, int x, int y) {
-    if (x == 0 || y == 0) {
-      return image.getRGB(x, y);
-    }
-
-    if (x > image.getWidth() - 2 || y > image.getHeight() - 2) {
-      return image.getRGB(x, y);
-    }
-
-    int[] redValues = new int[9];
+    int halfWindow = windowSize / 2;
+    int[] colorValues = new int[windowSize * windowSize];
     int count = 0;
-    for (int i = -1; i <= 1; i++) {
-      for (int j = -1; j <= 1; j++) {
-        int rgb = image.getRGB(x + i, y + j);
+
+    for (int i = -halfWindow; i <= halfWindow; i++) {
+      for (int j = -halfWindow; j <= halfWindow; j++) {
+        int imageX = Math.min(image.getWidth() - 1, Math.max(0, x + i));
+        int imageY = Math.min(image.getHeight() - 1, Math.max(0, y +j));
+
+        int rgb = image.getRGB(imageX, imageY);
         int r = (rgb >> 16) & 0xFF;
-        redValues[count++] = r;
+
+        colorValues[count++] = r;
       }
     }
 
-    java.util.Arrays.sort(redValues);
-    for(int a: redValues) {
-      System.out.println(a);
-    }
+    java.util.Arrays.sort(colorValues);
 
-    int newR = redValues[redValues.length / 2];
-    // Convert red to rgba
     int alpha = (image.getRGB(x, y) >> 24) & 0xFF;
-    int gray = newR;
-    int newRgb = (alpha << 24) | (gray << 16) | (gray << 8) | gray;
+    int newColor = colorValues[colorValues.length / 2];
+    int newRgb = (alpha << 24) | (newColor << 16) | (newColor << 8) | newColor;
 
-    System.out.println((newRgb >> 16 ) & 0xFF);
     return newRgb;
   }
 }

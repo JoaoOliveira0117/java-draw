@@ -9,5 +9,6 @@ public class Translate extends TransformImage {
       {0, 1, -ty},
       {0, 0, 1}
     });
+    this.processPixels();
   }
 }

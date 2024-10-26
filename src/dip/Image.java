@@ -3,18 +3,28 @@ package dip;
 import java.awt.image.BufferedImage;
 
 public class Image {
-  public Image(BufferedImage image) {}
+  protected BufferedImage image;
+  protected BufferedImage output;
+  
+  public Image(BufferedImage image) {
+    this.image = image;
+    this.output = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+  }
 
-  protected void processPixels(BufferedImage image) {
-    int width = image.getWidth();
-    int height = image.getHeight();
+  protected void processPixels() {
+    int width = this.image.getWidth();
+    int height = this.image.getHeight();
 
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        process(image, i, j);
+        process(this.image, i, j);
       }
     }
   }
   
-  public void process(BufferedImage image, int x, int y) {}
+  protected void process(BufferedImage image, int x, int y) {}
+
+  public BufferedImage getOutput() {
+    return output;
+  }
 }

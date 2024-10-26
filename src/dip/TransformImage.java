@@ -4,13 +4,10 @@ import java.awt.image.BufferedImage;
 
 public class TransformImage extends Image {
   private final double[][] matrix;
-  private BufferedImage output;
 
   public TransformImage(BufferedImage image, double[][] matrix) {
     super(image);
     this.matrix = matrix;
-    this.output = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-    super.processPixels(image);
   }
 
   @Override
@@ -27,9 +24,5 @@ public class TransformImage extends Image {
     if (newX < image.getWidth() && newY < image.getHeight() && newX >= 0 && newY >= 0) {
       output.setRGB(x, y, image.getRGB(newX, newY));
     }
-  }
-
-  public BufferedImage getOutput() {
-    return output;
   }
 }

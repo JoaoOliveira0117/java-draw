@@ -9,5 +9,6 @@ public class Rotate extends TransformImage {
       {Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle)), 0},
       {0, 0, 1}
     });
+    this.processPixels();
   }
 }

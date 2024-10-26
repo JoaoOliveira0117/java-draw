@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public class Grayscale extends TransformPixel {
   public Grayscale(BufferedImage image) {
     super(image);
+    this.processPixels();
   }
 
   @Override

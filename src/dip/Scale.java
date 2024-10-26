@@ -9,5 +9,6 @@ public class Scale extends TransformImage {
       {0, sy, 0},
       {0, 0, 1}
     });
+    this.processPixels();
   }
 }

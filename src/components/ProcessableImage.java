@@ -56,19 +56,19 @@ public class ProcessableImage {
   }
   
   public ProcessableImage brightness() {
-    image = new Brightness(image).getOutput();
+    image = new Brightness(image, 50).getOutput();
     
     return this;
   }
 
   public ProcessableImage contrast() {
-    image = new Contrast(image).getOutput();
+    image = new Contrast(image, 50).getOutput();
     
     return this;
   }
 
   public ProcessableImage medianFilter() {
-    image = new MedianFilter(image).getOutput();
+    image = new MedianFilter(image, 3).getOutput();
 
     return this;
   }
@@ -80,19 +80,19 @@ public class ProcessableImage {
   }
 
   public ProcessableImage thresholdFilter() {
-    image = new ThresholdFilter(image).getOutput();
+    image = new ThresholdFilter(image, 128).getOutput();
 
     return this;
   }
 
   public ProcessableImage EdgeDetectionRoberts() {
-    image = new EdgeDetectionRoberts(image).getOutput();
+    image = new Roberts(image, 128).getOutput();
 
     return this;
   }
 
   public ProcessableImage EdgeDetectionSobel() {
-    image = new EdgeDetectionSobel(image).getOutput();
+    image = new Sobel(image, 128).getOutput();
 
     return this;
   }
