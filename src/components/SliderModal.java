@@ -48,6 +48,7 @@ public class SliderModal extends Modal {
 
         this.confirmButton.addActionListener(e -> {
             listener.onConfirm();
+            dispose();
         });
 
         this.slider.addChangeListener(e -> {
@@ -57,9 +58,8 @@ public class SliderModal extends Modal {
 
         this.cancelButton.addActionListener(e -> {
             listener.onCancel();
+            dispose();
         });
-
-        display();
     }
 
     @Override

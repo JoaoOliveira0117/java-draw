@@ -3,9 +3,13 @@ package components;
 import javax.swing.JComponent;
 
 import builders.ContextMenuBuilder;
+import components.modals.ApplyCloseModal;
+import components.modals.ApplyOpenModal;
 import components.modals.BrightnessFilterModal;
 import components.modals.ContrastFilterModal;
+import components.modals.DilationModal;
 import components.modals.EdgeDetectionFilterModal;
+import components.modals.ErosionModal;
 import components.modals.GaussianFilterModal;
 import components.modals.GrayscaleModal;
 import components.modals.MedianFilterModal;
@@ -30,6 +34,11 @@ public class ImageContextMenu {
       .addItem("Threshold Filter", e -> new ThresholdFilterModal(image))
       .addItem("Roberts Edge Detection", e -> new EdgeDetectionFilterModal(image, true))
       .addItem("Sobel Edge Detection", e -> new EdgeDetectionFilterModal(image, false))
+      .addLineSeparator()
+      .addItem("Dilation", e -> new DilationModal(image))
+      .addItem("Erosion", e -> new ErosionModal(image))
+      .addItem("Open Filter", e -> new ApplyOpenModal(image))
+      .addItem("Close Filter", e -> new ApplyCloseModal(image))
       .show(component, x, y);
   }
 }

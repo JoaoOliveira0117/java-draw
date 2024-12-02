@@ -106,7 +106,17 @@ public class ProcessableImage {
   }
 
   public ProcessableImage EdgeDetectionSobel(int threshold) {
-    image = new Sobel(image, threshold).getOutput();
+    return this;
+  }
+
+  public ProcessableImage Dilation() {
+    image = new Dilation(image).getOutput();
+
+    return this;
+  }
+
+  public ProcessableImage Erosion() {
+    image = new Erosion(image).getOutput();
 
     return this;
   }

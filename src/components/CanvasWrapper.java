@@ -79,7 +79,7 @@ public class CanvasWrapper extends JScrollPane {
 		return panel;
 	}
 	
-	public void createDrawableCanvas(int width, int height) {
+	public DrawableCanvas createDrawableCanvas(int width, int height) {
 		if (drawableCanvas == null) {
 			drawableCanvas = new DrawableCanvas(width, height);
 			
@@ -89,8 +89,7 @@ public class CanvasWrapper extends JScrollPane {
 			panel.add(drawableCanvas);
 		}
 		
-		revalidate();
-		repaint();
+		return drawableCanvas;
 	}
 	
 	public void removeDrawableCanvas() {

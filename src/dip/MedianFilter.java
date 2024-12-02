@@ -7,6 +7,7 @@ public class MedianFilter extends TransformFilter {
 
   public MedianFilter(BufferedImage image, int windowSize) {
     super(image);
+    System.out.println(windowSize);
     this.windowSize = windowSize;
     this.processPixels();
   }

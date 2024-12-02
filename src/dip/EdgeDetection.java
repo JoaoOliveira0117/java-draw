@@ -19,6 +19,7 @@ public class EdgeDetection extends TransformFilter {
 
   public EdgeDetection(BufferedImage image, int threshold, double[][] xMatrix, double[][] yMatrix) {
     super(image);
+    System.out.println(threshold);
     this.threshold = threshold;
     this.xMatrix = xMatrix;
     this.yMatrix = yMatrix;

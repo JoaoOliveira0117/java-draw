@@ -6,7 +6,7 @@ import interfaces.SliderModalListener;
 
 public class EdgeDetectionFilterModal extends SliderModal {  
   public EdgeDetectionFilterModal(ProcessableImage image, boolean isRoberts) {
-    super(isRoberts ? "Robert's" : "Sobel's" + " Edge Detection Filter", createListener(image, isRoberts), 0, 128, 16);
+    super(isRoberts ? "Robert's" : "Sobel's" + " Edge Detection Filter", createListener(image, isRoberts), 0, 256, 1);
     display();
   }
 
@@ -18,10 +18,12 @@ public class EdgeDetectionFilterModal extends SliderModal {
       @Override
       public void onConfirm() {
         image.setImage(commitableImage.getImage());
+        image.triggerRerender();
       }
 
       @Override
       public void onChange(Object value) {
+        System.out.println(value);
         commitableImage.setImage(originalImage.getImage());
         commitableImage.thresholdFilter((int) value);
 
