@@ -84,7 +84,7 @@ public class MoedaDetector {
     g.drawImage(image, 0, 0, null);
 
     String[] labels = { "1 real", "50 centavos", "25 centavos", "10 centavos", "5 centavos" };
-    Color[] colors = { Color.YELLOW, Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE };
+    Color[] colors = { Color.YELLOW, Color.CYAN, Color.PINK, Color.GREEN, Color.ORANGE };
 
     List<List<Circle>> groups = new ArrayList<>();
     double groupingDistance = 20;
