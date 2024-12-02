@@ -6,7 +6,7 @@ import interfaces.SliderModalListener;
 
 public class EdgeDetectionFilterModal extends SliderModal {  
   public EdgeDetectionFilterModal(ProcessableImage image, boolean isRoberts) {
-    super(isRoberts ? "Robert's" : "Sobel's" + " Edge Detection Filter", createListener(image, isRoberts), 0, 256, 1);
+    super(isRoberts ? "Robert's" : "Sobel's" + " Edge Detection Filter", createListener(image, isRoberts), 0, 255, 5);
     display();
   }
 

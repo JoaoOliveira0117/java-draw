@@ -83,6 +83,9 @@ public class MoedaDetector {
     Graphics2D g = output.createGraphics();
     g.drawImage(image, 0, 0, null);
 
+    String[] labels = { "1 real", "50 centavos", "25 centavos", "10 centavos", "5 centavos" };
+    Color[] colors = { Color.YELLOW, Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE };
+
     List<List<Circle>> groups = new ArrayList<>();
     double groupingDistance = 20;
 
@@ -107,10 +110,9 @@ public class MoedaDetector {
         }
     }
 
-    g.setColor(new Color(255, 0, 0, 128));
+    List<Circle> finalCircles = new ArrayList<>();
     for (List<Circle> group : groups) {
-
-      int sumX = 0, sumY = 0;
+        int sumX = 0, sumY = 0;
         for (Circle c : group) {
             sumX += c.getX();
             sumY += c.getY();
@@ -127,11 +129,33 @@ public class MoedaDetector {
         }
 
         int finalRadius = (int) Math.ceil(maxDistance);
+        finalCircles.add(new Circle(avgX, avgY, finalRadius));
+    }
 
-        g.fillOval(avgX - finalRadius, avgY - finalRadius, finalRadius * 2, finalRadius * 2);
+    finalCircles.sort((c1, c2) -> Integer.compare(c2.getRadius(), c1.getRadius()));
+
+    int maxLabels = Math.min(labels.length, finalCircles.size());
+
+    for (int i = 0; i < maxLabels; i++) {
+        Circle circle = finalCircles.get(i);
+        String label = labels[i];
+        Color color = colors[i];
+
+        g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 128));
+        g.fillOval(circle.getX() - circle.getRadius(), circle.getY() - circle.getRadius(), circle.getRadius() * 2, circle.getRadius() * 2);
+
+        g.setColor(Color.BLACK);
+        g.drawString(label, circle.getX() - (label.length() * 3), circle.getY());
+    }
+
+    g.setColor(Color.GRAY);
+    for (int i = maxLabels; i < finalCircles.size(); i++) {
+        Circle circle = finalCircles.get(i);
+        g.drawOval(circle.getX() - circle.getRadius(), circle.getY() - circle.getRadius(), circle.getRadius() * 2, circle.getRadius() * 2);
     }
 
     g.dispose();
     return output;
 }
+
 }
